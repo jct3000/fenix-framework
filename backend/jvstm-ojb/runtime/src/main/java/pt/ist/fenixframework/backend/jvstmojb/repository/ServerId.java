@@ -30,15 +30,15 @@ public class ServerId {
             if (rs.next()) {
                 serverId = rs.getInt("ID");
                 updateStr =
-                        "update FF$SERVER_ID_LEASE set EXPIRATION = now() + interval 20 minute, SERVER = '"
-                                + Util.getServerName() + "' where ID = " + serverId;
+                        "update FF$SERVER_ID_LEASE set EXPIRATION = now() + interval " + DbUtil.getServerIdLeaseTime()
+                                + " minute, SERVER = '" + Util.getServerName() + "' where ID = " + serverId;
             } else { // No available record, search for Max
                 try (ResultSet maxRs = query.executeQuery("select max(ID) from FF$SERVER_ID_LEASE")) {
                     maxRs.first();
                     serverId = maxRs.getInt(1) + 1;
                     updateStr =
                             "INSERT INTO FF$SERVER_ID_LEASE (ID, SERVER, EXPIRATION) VALUES (" + serverId + ", '"
-                                    + Util.getServerName() + "', now() + interval 20 minute)";
+                                    + Util.getServerName() + "', now() + interval " + DbUtil.getServerIdLeaseTime() + " minute)";
                 }
             }
 
@@ -92,14 +92,14 @@ public class ServerId {
                      * If the lease has expired, the only safe thing to do
                      * is to shut down the application server.
                      *
-                     * For now this is replaced with an error message, as the
-                     * server ID is not yet actively used to generate OIDs.
                      */
                     if (validUntil.isBeforeNow()) {
-                        logger.error("Server ID lease has expired! Was valid until {}. Object creation disabled.", validUntil);
-                        // Reset the server id. This will prevent new objects from being created
                         serverId = -1;
-                        return;
+                        logger.error(
+                                "Server ID lease has expired! Was valid until {}. Object creation is not possible. "
+                                        + "Shutting down the system",
+                                validUntil);
+                        System.exit(-1);
                     }
 
                     renewLease();
@@ -116,7 +116,8 @@ public class ServerId {
         private void renewLease() throws SQLException {
             logger.info("Renewing server id lease.");
             try (Connection connection = DbUtil.openConnection(); Statement stmt = connection.createStatement()) {
-                stmt.executeUpdate("update FF$SERVER_ID_LEASE set EXPIRATION = now() + interval 20 minute where ID = " + serverId);
+                stmt.executeUpdate("update FF$SERVER_ID_LEASE set EXPIRATION = now() + interval "
+				        + DbUtil.getServerIdLeaseTime() + " minute where ID = " + serverId);
                 connection.commit();
             }
         }
@@ -131,11 +132,11 @@ public class ServerId {
 
         /*
          * Update the in-memory timestamp of the last successful
-         * lease renewal. The leases last 20 minutes, so set the
-         * timeout to 19 minutes, to give a one minute margin.
+         * lease renewal. The leases last X minutes, so set the
+         * timeout to X-1 minutes, to give a one minute margin.
          */
         private void updateValidity() {
-            this.validUntil = new DateTime().plusMinutes(19);
+            this.validUntil = new DateTime().plusMinutes(DbUtil.getServerIdLeaseTime() - 1);
 
             // Renew the lease after ten minutes
             this.interval = 10 * 60 * 1000;
