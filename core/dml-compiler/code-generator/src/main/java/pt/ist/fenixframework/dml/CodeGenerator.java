@@ -351,6 +351,17 @@ public abstract class CodeGenerator {
         comment(out, "Getters and Setters");
         generateSlotsAccessors(domClass, out);
         newline(out);
+//MUDEI AQUI EXP inicio
+		comment(out, "Funcao teste exp");
+		newline(out);
+        printWords(out, "public", "int", "Exp()");
+        startMethodBody(out);
+        printWords(out, "return", "20" + ";");
+        endMethodBody(out);
+		newline(out);
+
+
+//MUDEI AQUI EXP fim	
 
         comment(out, "Role Methods");
         generateRoleSlotsMethods(domClass.getRoleSlots(), out);
