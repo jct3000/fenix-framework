@@ -165,8 +165,78 @@ public abstract class CodeGenerator {
         while (classesIter.hasNext()) {
             generateOneClass(classesIter.next());
         }
+		//MUDEI AQUI
+		generatePersonalData(getDomainModel().getClasses());   				/*maybe   ??  generatePersonalData(classesIter.next());		generatePersonalData(getDomainModel().getClasses());    
+																									  problema: dominio das classes em causa para ter tudo no mesmo sitio?? ir buscar a classes outra vez pk isto acab com a lista faz "realod da lista"*/
+	 }		
+//MUDEI AQUI INICIO dp
+
+    protected void generatePersonalData(Iterator<DomainClass> iterador2) {										/*    protected void  generatePersonalData(final DomainClass domClass) {				// baseado no generateOneClass()*/
+        final String packageName = iterador2.next().getPackageName();												/*        final String packageName = domClass.getPackageName();*/
+
+		// new file ( directory, name)
+        writeToFile(new File(getDirectoryFor(packageName), "PersonalData" + ".java"), new WriteProcedure() {											//maybe ??   getBaseDirectoryFor(packageName)
+            @Override																																									
+            public void doIt(PrintWriter out) {
+             //   generateFilePreamble(packageName, out);											 // what it does???
+				generateDPClass(out);
+            }
+        });
+	}
+	    public void generateDPClass(PrintWriter out) {
+		printWords(out, "import", "pt.ist.fenixframework.Atomic"+";");
+		newline(out);
+		comment(out, "classe consiste numa booleano que faz de tag");
+        printWords(out, "public", "class","PersonalData");
+        newBlock(out);
+		comment(out, "variables");
+        printWords(out, "boolean", "personal_tag"+";");
+       // generatePublicClassConstructors(leafClassName, out);
+	   
+		newline(out);
+	   	comment(out, "Constructor");
+		printWords(out, "public", "PersonalData()");
+        newBlock(out);
+		printWords(out, "this.personal_tag", "=","true"+";");
+		closeBlock(out);
+		
+		newline(out);
+		comment(out, "setters getters");
+		printWords(out, "@Atomic");
+		newline(out);
+		printWords(out, "public", "void", "makeprivate()");
+		newBlock(out);
+		printWords(out, "if(","personal_tag", "!=", "true"+")");
+		newBlock(out);
+		printWords(out, "personal_tag", "=", "true"+";");		
+		closeBlock(out);
+		closeBlock(out);
+		
+		newline(out);
+		printWords(out, "@Atomic");
+		newline(out);
+		printWords(out, "public", "void", "makepublic()");
+		newBlock(out);
+		printWords(out, "if(","personal_tag", "!=", "false"+")");
+		newBlock(out);
+		printWords(out, "personal_tag", "=", "false"+";");		
+		closeBlock(out);
+		closeBlock(out);
+		
+		newline(out);
+		printWords(out, "public", "boolean", "ispublic()");
+		newBlock(out);
+		printWords(out, "return", "personal_tag"+";");
+		closeBlock(out);
+
+		
+		
+        closeBlock(out);
     }
 
+
+
+//MUDEI AQUI FINAL
     protected void generateOneClass(final DomainClass domClass) {
         final String packageName = domClass.getPackageName();
 
@@ -351,7 +421,7 @@ public abstract class CodeGenerator {
         comment(out, "Getters and Setters");
         generateSlotsAccessors(domClass, out);
         newline(out);
-//MUDEI AQUI EXP inicio
+//MUDEI AQUI EXP inicio (n recebe nd devolve 20)
 		comment(out, "Funcao teste exp");
 		newline(out);
         printWords(out, "public", "int", "Exp()");
