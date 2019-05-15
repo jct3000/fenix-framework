@@ -15,7 +15,7 @@
     <url>http://fenix-ashes.ist.utl.pt</url>
 
     <modules>
-      <!--  <module>runtime</module> -->
+        <module>runtime</module>
         <module>code-generator</module>
     </modules>
 </project>

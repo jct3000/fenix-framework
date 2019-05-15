@@ -8,8 +8,8 @@
         <version>99.99.99-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fenix-framework-backend-dp-code-generator</artifactId>
-    <name>Fenix Framework In-memory Backend Code Generator dp</name>
+    <artifactId>fenix-framework-backend-dp-runtime</artifactId>
+    <name>Fenix Framework In-memory Backend Runtime</name>
 
     <build>
         <plugins>
@@ -46,12 +46,7 @@
     <dependencies>
         <dependency>
             <groupId>pt.ist</groupId>
-            <artifactId>fenix-framework-core-dml-code-generator</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>pt.ist</groupId>
-            <artifactId>fenix-framework-core-indexes-code-generator</artifactId>
+            <artifactId>fenix-framework-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -65,5 +60,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 </project>

@@ -26,6 +26,6 @@
         <module>jvstm-ojb</module>
         <module>mem</module>
         <module>ogm</module>
-        <module>dp</module>
+      <!--  <module>dp</module>  -->
     </modules>
 </project>

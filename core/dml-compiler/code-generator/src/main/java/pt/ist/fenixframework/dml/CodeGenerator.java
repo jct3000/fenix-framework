@@ -367,6 +367,7 @@ public abstract class CodeGenerator {
     protected void generateSlots(Iterator slotsIter, PrintWriter out) {
         while (slotsIter.hasNext()) {
             generateSlot((Slot) slotsIter.next(), out);
+
         }
     }
 
@@ -692,7 +693,7 @@ public abstract class CodeGenerator {
     }
 
     protected String getRelationMethodNameFor(Role role) {
-        // when the two roles of a relation are played by the same class, 
+        // when the two roles of a relation are played by the same class,
         // we need to give different names to the relation slots because both
         // will be in the same class
 
@@ -700,7 +701,7 @@ public abstract class CodeGenerator {
     }
 
     protected String getRelationMethodNameFor(Role role, boolean direct) {
-        // when the two roles of a relation are played by the same class, 
+        // when the two roles of a relation are played by the same class,
         // we need to give different names to the relation slots because both
         // will be in the same class
 
@@ -710,12 +711,12 @@ public abstract class CodeGenerator {
     /**
      * The purpose of the init$Instance method is to have the code needed to correctly initialize a
      * domain object instance. There are two cases:
-     * 
+     *
      * <ol>
      * <li>When the instance is *really* new.
      * <li>When the instance is being re-constructed from persistence (by the DomainObjectAllocator)
      * </ol>
-     * 
+     *
      * <p>
      * In the first case the parameter 'allocateOnly' is false. Typically, we need to fully initialize the slots, e.g. create new
      * lists, etc. In the second case, the instance's attributes will be populated, so we should not create them anew.

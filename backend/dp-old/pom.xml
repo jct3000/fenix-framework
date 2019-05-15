@@ -10,12 +10,12 @@
     </parent>
 
     <artifactId>fenix-framework-backend-dp</artifactId>
-    <name>Fenix Framework In-memory Backend - dp</name>
+    <name>Fenix Framework Data Protection Backend</name>
     <packaging>pom</packaging>
     <url>http://fenix-ashes.ist.utl.pt</url>
 
     <modules>
-      <!--  <module>runtime</module> -->
+       <!-- <module>runtime</module> -->
         <module>code-generator</module>
     </modules>
 </project>

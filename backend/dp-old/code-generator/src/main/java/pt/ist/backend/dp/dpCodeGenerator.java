@@ -1,7 +1,7 @@
-package pt.ist.fenixframework.dml;
+package pt.ist.fenixframework.backend.dp;
 
 
-//acrecentado imports inicio
+import pt.ist.fenixframework.dml;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,19 +11,39 @@ import java.util.Iterator;
 import java.util.List;
 
 
+import pt.ist.fenixframework.Constants;
+import pt.ist.fenixframework.dml.runtime.DomainBasedMap;
+import pt.ist.fenixframework.dml.runtime.RelationAwareSet;
 
 
-//acrecentado imports fim
 
 
 
 
 
-public class DefaultCodeGenerator extends CodeGenerator {
 
-    public DefaultCodeGenerator(CompilerArgs compArgs, DomainModel domainModel) {
+import pt.ist.fenixframework.dml.CompilerArgs;
+import pt.ist.fenixframework.dml.DomainClass;
+import pt.ist.fenixframework.dml.DomainEntity;
+import pt.ist.fenixframework.dml.DomainModel;
+import pt.ist.fenixframework.dml.ExternalizationElement;
+import pt.ist.fenixframework.dml.Role;
+import pt.ist.fenixframework.dml.Slot;
+import pt.ist.fenixframework.dml.ValueType;
+import pt.ist.fenixframework.dml.ValueTypeSerializationGenerator;
+
+
+/**
+ * Top-level class of all DML code generators.   baseado no ogm code e no jvstm-obj
+ */
+public  class dpCodeGenerator extends CodeGenerator{
+
+
+    public dpCodeGenerator(CompilerArgs compArgs, DomainModel domainModel) {
         super(compArgs, domainModel);
     }
+
+
 
     @Override
     protected String getBackEndName() {
@@ -36,10 +56,11 @@ public class DefaultCodeGenerator extends CodeGenerator {
     }
 
 
-
-// acrescentado inicio
-
-
+    //
+    // @Override
+    // protected String getDefaultConfigClassName() {
+    //     return JvstmOJBConfig.class.getName();
+    // }
     // @Override
     // protected void generateBaseClassBody(DomainClass domClass, PrintWriter out) {
     //     comment(out, "Static Slots");
@@ -102,27 +123,6 @@ public class DefaultCodeGenerator extends CodeGenerator {
     //
     // }
 
-
-
-
-
-
-    //
-    // @Override
-    // protected void generateSlot(Slot slot, PrintWriter out) {
-    //     onNewline(out);
-    //     printWords(out, "private", slot.getTypeName(), slot.getName());
-    //     print(out, ";");
-    //     if (slot.getTypeName()=="boolean" &&  slot.getName()== "personal_tag")
-    //     System.out.println("\n\n\n\n Classe Privada \n\n\n\n");
-    // }
-      //
-      // @Override
-      //   protected void generateSlotGetter(String slotName, String typeName, PrintWriter out) {
-      //       generateSlotGetter("public", slotName, typeName, out);
-      //       //if (typeName=="boolean" &&  slotName== "personal_tag")
-      //       System.out.println("\n\n\n\n Classe Privada \n\n\n\n");
-      //   }
 
 
 
